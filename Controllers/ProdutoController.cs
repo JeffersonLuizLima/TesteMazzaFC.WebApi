@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -24,21 +25,25 @@ namespace TesteMazzaFC.WebApi.Controllers
             using (var prod = new HttpClient())
             {
                 prod.BaseAddress = new Uri(URL_BASE);
+                prod.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)(Session["token"] ?? string.Empty));
 
                 var result = await prod.GetAsync("Produtos");
 
                 if (result.IsSuccessStatusCode)
                 {
                     produtos = await result.Content.ReadAsAsync<IList<ProdutoViewModel>>();
+                    return View(produtos);
                 }
                 else
                 {
-                    produtos = Enumerable.Empty<ProdutoViewModel>();
-                    ModelState.AddModelError(string.Empty, "Erro no servidor. Contate o Administrador.");
+                    if(result.ReasonPhrase == "Unauthorized")
+                    {
+                        return View("Error");
+                    }
                 }
             }
-
             return View(produtos);
+
         }
 
         [HttpGet]
@@ -61,6 +66,7 @@ namespace TesteMazzaFC.WebApi.Controllers
                 using (var prod = new HttpClient())
                 {
                     prod.BaseAddress = new Uri(URL_BASE);
+                    prod.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)(Session["token"] ?? string.Empty));
 
                     var result = await prod.PostAsJsonAsync("Produtos", produto);
 
@@ -88,6 +94,7 @@ namespace TesteMazzaFC.WebApi.Controllers
             using (var prod = new HttpClient())
             {
                 prod.BaseAddress = new Uri($"{URL_BASE}Produtos/{id}");
+                prod.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)(Session["token"] ?? string.Empty));
 
                 var responseTask = await prod.GetAsync("");
 
@@ -109,7 +116,8 @@ namespace TesteMazzaFC.WebApi.Controllers
             using (var prod = new HttpClient())
             {
                 prod.BaseAddress = new Uri(URL_BASE);
-  
+                prod.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)(Session["token"] ?? string.Empty));
+
                 var result = await prod.PutAsJsonAsync<ProdutoViewModel>($"Produtos/{produto.Id}", produto);
 
                 if (result.IsSuccessStatusCode) return RedirectToAction("Index");
@@ -134,6 +142,7 @@ namespace TesteMazzaFC.WebApi.Controllers
             using (var prod = new HttpClient())
             {
                 prod.BaseAddress = new Uri($"{URL_BASE}Produtos/{id}");
+                prod.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)(Session["token"] ?? string.Empty));
 
                 var responseTask = await prod.DeleteAsync("");
 
@@ -152,6 +161,7 @@ namespace TesteMazzaFC.WebApi.Controllers
             using (var catego = new HttpClient())
             {
                 catego.BaseAddress = new Uri(URL_BASE);
+                catego.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", (string)(Session["token"] ?? string.Empty));
 
                 var result = await catego.GetAsync("Categoria");
 

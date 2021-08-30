@@ -32,7 +32,10 @@ namespace TesteMazzaFC.WebApi.Controllers
 
                 if (result.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Produto/Index");
+                    var dados = await result.Content.ReadAsAsync<UserViewModel>();
+                    Session["token"] = dados.token;
+
+                    return RedirectToAction("../Produto/Index");
                 }
                 else
                 {
