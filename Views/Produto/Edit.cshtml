@@ -1,17 +1,17 @@
 ﻿@model TesteMazzaFC.WebApi.Models.ProdutoViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Produto";
 }
 
-<h2>Edit</h2>
+<h2>Alterar produto</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>ProdutoViewModel</h4>
+        <h4>Preencha os campos abaixo para alterar um novo produtor</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CategoriaId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Categoria.Descricao, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(f => f.CategoriaId, new SelectList(ViewBag.categorias, "Id", "Descricao"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CategoriaId, "", new { @class = "text-danger" })
@@ -42,12 +42,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Alterar" class="btn btn-success" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div>    
+    @Html.ActionLink("Voltar", "Index", new { }, new { @class = "btn btn-sm btn-primary" })
 </div>

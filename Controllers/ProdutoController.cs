@@ -68,14 +68,10 @@ namespace TesteMazzaFC.WebApi.Controllers
                     {
                         return RedirectToAction("Index");
                     }
-                    var error = await result.Content.ReadAsAsync<ErroViewModel>();
 
+                    var error = await result.Content.ReadAsAsync<ErroViewModel>();
                     ModelState.AddModelError(string.Empty, error.Errors.FirstOrDefault());
                 }
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Erro no Servidor. Contacte o Administrador.");
             }
             
             await CreateCategoriaViewBag();
@@ -116,10 +112,13 @@ namespace TesteMazzaFC.WebApi.Controllers
   
                 var result = await prod.PutAsJsonAsync<ProdutoViewModel>($"Produtos/{produto.Id}", produto);
 
-                if (result.IsSuccessStatusCode)
+                if (result.IsSuccessStatusCode) return RedirectToAction("Index");
+                else
                 {
-                    return RedirectToAction("Index");
+                    var error = await result.Content.ReadAsAsync<ErroViewModel>();
+                    ModelState.AddModelError(string.Empty, error.Errors.FirstOrDefault());
                 }
+               
             }
             await CreateCategoriaViewBag();
             return View(produto);

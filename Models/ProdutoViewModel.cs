@@ -14,6 +14,7 @@ namespace TesteMazzaFC.WebApi.Models
         [StringLength(60, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 3)]
         public string Nome { get; set; }
 
+        [Display(Name = "Preço")]
         public decimal Preco { get; set; }
 
         public virtual CategoriaViewModel Categoria { get; set; }

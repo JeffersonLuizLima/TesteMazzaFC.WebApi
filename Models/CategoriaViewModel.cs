@@ -10,7 +10,7 @@ namespace TesteMazzaFC.WebApi.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Descrição")]
+        [Display(Name = "Categoria")]
         public string Descricao { get; set; }
     }
 }
