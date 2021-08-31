@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.table > tbody > tr:first-child{
+    background-color: #dedede;
+}
+
+.m-b-2{
+    margin-bottom:20px;
+}
